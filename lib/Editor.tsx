@@ -17,10 +17,25 @@ export const Editor = forwardRef(
   ) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDrawing, setIsDrawing] = useState(false);
+    const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
+    const [context, setContext] = useState<CanvasRenderingContext2D | null>(
+      null
+    );
 
     const getImageData = useCallback(() => {
-      console.log('hi');
-    }, []);
+      if (!canvasRef.current || !context) {
+        return null;
+      }
+
+      const imageData = context.getImageData(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+
+      return imageData;
+    }, [context]);
 
     useImperativeHandle(ref, () => ({
       getImageData,
