@@ -54,9 +54,8 @@ export const Editor = forwardRef(
       }
 
       const rect = canvas.getBoundingClientRect();
-      const pixelRatio = window.devicePixelRatio;
-      const x = (event.clientX - rect.left) / pixelRatio;
-      const y = (event.clientY - rect.top) / pixelRatio;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
       return { x, y };
     };
@@ -110,8 +109,7 @@ export const Editor = forwardRef(
     return (
       <canvas
         ref={canvasRef}
-        width={width}
-        height={height}
+        style={{ width, height }}
         onMouseDown={onStartDrawing}
         onMouseUp={onStopDrawing}
         onMouseMove={onDrawMove}
