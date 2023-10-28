@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 import './styles.css';
+import { assertTruthy } from './assert';
 
 export const Editor = forwardRef(
   (
@@ -25,11 +26,6 @@ export const Editor = forwardRef(
       getImageData,
     }));
 
-    const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
-    const [context, setContext] = useState<CanvasRenderingContext2D | null>(
-      null
-    );
-
     useEffect(() => {
       const canvasElement: HTMLCanvasElement | null = canvasRef.current;
 
@@ -38,10 +34,7 @@ export const Editor = forwardRef(
       }
 
       const contextElement = canvasElement.getContext('2d');
-
-      if (!contextElement) {
-        return;
-      }
+      assertTruthy(contextElement);
 
       const pixelRatio = window.devicePixelRatio;
       canvasElement.width = canvasElement.offsetWidth * pixelRatio;
@@ -51,7 +44,7 @@ export const Editor = forwardRef(
       contextElement.imageSmoothingEnabled = false;
       setCanvas(canvasElement);
       setContext(contextElement);
-    }, []);
+    }, [canvasRef]);
 
     const getAdjustedCoordinatesForPixelRatioAndCanvasOffset = (
       event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
