@@ -1,13 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { Editor } from './Editor';
 
-export function useEditor({
-  width,
-  height,
-}: {
-  width: number;
-  height: number;
-}) {
+export function useBlot() {
   const editorRef = useRef<{ getImageData: () => void }>(null);
 
   const getImageData = useCallback(() => {
@@ -16,9 +10,10 @@ export function useEditor({
     }
   }, []);
 
-  const EditorComponent = (
-    <Editor width={width} height={height} ref={editorRef} />
-  );
-
-  return { getImageData, EditorComponent };
+  return {
+    getImageData,
+    Editor: ({ width, height }: { width: number; height: number }) => (
+      <Editor width={width} height={height} ref={editorRef} />
+    ),
+  };
 }
