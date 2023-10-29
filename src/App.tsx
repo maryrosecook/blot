@@ -9,7 +9,7 @@ function App() {
   }, [getImageData]);
 
   return (
-    <div className="m1 p1 border border-gray rounded inline-block">
+    <div className="flex m1">
       <Editor width={200} height={200} />
     </div>
   );

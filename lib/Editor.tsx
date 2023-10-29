@@ -9,6 +9,7 @@ import {
 } from 'react';
 import './styles.css';
 import { assertTruthy } from './assert';
+import { Toolbar } from './Toolbar';
 
 export const Editor = forwardRef(
   (
@@ -21,6 +22,7 @@ export const Editor = forwardRef(
     const [context, setContext] = useState<CanvasRenderingContext2D | null>(
       null
     );
+    const [currentTool, setCurrentTool] = useState('pencil');
 
     const getImageData = useCallback(() => {
       if (!canvasRef.current || !context) {
@@ -122,13 +124,29 @@ export const Editor = forwardRef(
     };
 
     return (
-      <canvas
-        ref={canvasRef}
-        style={{ width, height }}
-        onMouseDown={onStartDrawing}
-        onMouseUp={onStopDrawing}
-        onMouseMove={onDrawMove}
-      />
+      <div className="flex width-full height-full">
+        <div className="border-gray border-bottom border-left border-right border-top rounded-top-left rounded-bottom-left rounded-bottom-right">
+          <canvas
+            ref={canvasRef}
+            style={{ width, height }}
+            onMouseDown={onStartDrawing}
+            onMouseUp={onStopDrawing}
+            onMouseMove={onDrawMove}
+          />
+        </div>
+
+        <div className="height-full">
+          <div
+            className="border-gray border-top border-right border-bottom border-left rounded-top-right rounded-bottom-right rounded-bottom-left"
+            style={{ marginLeft: -1 }}
+          >
+            <Toolbar
+              currentTool={currentTool}
+              setCurrentTool={setCurrentTool}
+            />
+          </div>
+        </div>
+      </div>
     );
   }
 );
