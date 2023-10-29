@@ -81,6 +81,9 @@ export const Editor = forwardRef(
       return { x, y };
     };
 
+    const PENCIL_RADIUS = 3;
+    const ERASER_SIZE = 9;
+
     const onStartDrawing = (
       event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
     ) => {
@@ -88,14 +91,35 @@ export const Editor = forwardRef(
         return;
       }
 
-      const coords = getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
+      const coordinates =
+        getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
 
-      if (!coords) {
+      if (!coordinates) {
         return;
       }
 
       context.beginPath();
-      context.moveTo(coords.x, coords.y);
+      if (currentTool === 'eraser') {
+        context.globalCompositeOperation = 'destination-out';
+        context.clearRect(
+          coordinates.x,
+          coordinates.y,
+          ERASER_SIZE,
+          ERASER_SIZE
+        );
+      } else {
+        context.globalCompositeOperation = 'source-over';
+        context.lineWidth = 7;
+        context.arc(
+          coordinates.x,
+          coordinates.y,
+          PENCIL_RADIUS,
+          0,
+          Math.PI * 2,
+          true
+        );
+        context.fill();
+      }
       setIsDrawing(true);
     };
 
@@ -106,16 +130,32 @@ export const Editor = forwardRef(
         return;
       }
 
-      const coords = getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
+      const coordinates =
+        getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
 
-      if (!coords) {
+      if (!coordinates) {
         return;
       }
 
-      context.lineTo(coords.x, coords.y);
-      context.stroke();
       context.beginPath();
-      context.moveTo(coords.x, coords.y);
+      if (currentTool === 'eraser') {
+        context.clearRect(
+          coordinates.x,
+          coordinates.y,
+          ERASER_SIZE,
+          ERASER_SIZE
+        );
+      } else {
+        context.arc(
+          coordinates.x,
+          coordinates.y,
+          PENCIL_RADIUS,
+          0,
+          Math.PI * 2,
+          true
+        );
+        context.fill();
+      }
     };
 
     const onStopDrawing = () => {
@@ -125,6 +165,7 @@ export const Editor = forwardRef(
 
       context.beginPath();
       setIsDrawing(false);
+      context.globalCompositeOperation = 'source-over';
     };
 
     return (
