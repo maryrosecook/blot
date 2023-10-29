@@ -43,7 +43,7 @@ export const Editor = forwardRef(
       getImageData,
     }));
 
-    useEffect(() => {
+    const setupCanvas = useCallback(() => {
       const canvasElement: HTMLCanvasElement | null = canvasRef.current;
 
       if (!canvasElement) {
@@ -61,7 +61,11 @@ export const Editor = forwardRef(
       contextElement.imageSmoothingEnabled = false;
       setCanvas(canvasElement);
       setContext(contextElement);
-    }, [canvasRef]);
+    }, []);
+
+    useEffect(() => {
+      setupCanvas();
+    }, [setupCanvas]);
 
     const getAdjustedCoordinatesForPixelRatioAndCanvasOffset = (
       event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
