@@ -81,6 +81,24 @@ export const Editor = forwardRef(
       return { x, y };
     };
 
+    const onStartDrawing = (
+      event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
+    ) => {
+      if (!context) {
+        return;
+      }
+
+      const coords = getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
+
+      if (!coords) {
+        return;
+      }
+
+      context.beginPath();
+      context.moveTo(coords.x, coords.y);
+      setIsDrawing(true);
+    };
+
     const onDrawMove = (
       event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
     ) => {
@@ -98,24 +116,6 @@ export const Editor = forwardRef(
       context.stroke();
       context.beginPath();
       context.moveTo(coords.x, coords.y);
-    };
-
-    const onStartDrawing = (
-      event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-    ) => {
-      if (!context) {
-        return;
-      }
-
-      const coords = getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
-
-      if (!coords) {
-        return;
-      }
-
-      context.beginPath();
-      context.moveTo(coords.x, coords.y);
-      setIsDrawing(true);
     };
 
     const onStopDrawing = () => {
