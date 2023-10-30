@@ -3,6 +3,8 @@ import { Editor } from './Editor';
 import { assertTruthy } from './assert';
 
 export function useBlot({ colors }: { colors: Array<string> }) {
+  assertTruthy(colors.length > 0);
+
   const editorRef = useRef<{ getImageData: () => void }>(null);
 
   const getImageData = useCallback(() => {

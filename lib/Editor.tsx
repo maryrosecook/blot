@@ -22,7 +22,7 @@ export const Editor = forwardRef(
   ) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [currentTool, setCurrentTool] = useState('pencil');
-    const [currentColor, setCurrentColor] = useState('#000000');
+    const [currentColor, setCurrentColor] = useState(colors[0]);
 
     const getImageData = useCallback(() => {
       const canvas = canvasRef.current;
