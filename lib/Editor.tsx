@@ -23,6 +23,7 @@ export const Editor = forwardRef(
       null
     );
     const [currentTool, setCurrentTool] = useState('pencil');
+    const [currentColor, setCurrentColor] = useState('#000000');
 
     const getImageData = useCallback(() => {
       if (!canvasRef.current || !context) {
@@ -178,6 +179,8 @@ export const Editor = forwardRef(
             <Toolbar
               currentTool={currentTool}
               setCurrentTool={setCurrentTool}
+              currentColor={currentColor}
+              setCurrentColor={setCurrentColor}
             />
           </div>
         </div>

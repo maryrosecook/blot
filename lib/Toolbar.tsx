@@ -10,14 +10,16 @@ enum Tools {
 export function Toolbar({
   currentTool,
   setCurrentTool,
+  currentColor,
+  setCurrentColor,
 }: {
   currentTool: string;
   setCurrentTool: React.Dispatch<React.SetStateAction<string>>;
+  currentColor: string;
+  setCurrentColor: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
-    <div className="flex flex-column p1" style={{ width: 35, height: 100 }}>
-      <div className=""></div>
-
+    <div className="flex flex-column p1" style={{ width: 35 }}>
       {Object.values(Tools).map((tool, index) => (
         <div
           key={tool}
@@ -37,6 +39,15 @@ export function Toolbar({
           />
         </div>
       ))}
+
+      <div
+        className={classNames(
+          'flex justify-between items-center p-half rounded border border-box mt1',
+          currentTool === 'color' ? 'gray-light1 border-black' : 'border-gray'
+        )}
+      >
+        <div style={{ width: 25, height: 25, backgroundColor: currentColor }} />
+      </div>
     </div>
   );
 }
