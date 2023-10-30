@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Button } from 'evergreen-ui';
 import { useBlot } from '../lib/useBlot';
 
 const COLORS = [
@@ -16,15 +16,23 @@ const COLORS = [
   '#E1B040',
 ];
 
-  useEffect(() => {
-    getImageData();
-  }, [getImageData]);
 function App() {
   const { getImageData, Editor } = useBlot({ colors: COLORS });
 
   return (
-    <div className="flex m1">
+    <div className="flex flex-column m1">
       <Editor width={200} height={200} />
+
+      <div>
+        <Button
+          className="mt1"
+          onClick={() => {
+            console.log(getImageData());
+          }}
+        >
+          Log image data
+        </Button>
+      </div>
     </div>
   );
 }
