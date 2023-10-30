@@ -1,1 +1,1 @@
-export { Blot } from './Blot';
+export { useBlot } from './useBlot';
