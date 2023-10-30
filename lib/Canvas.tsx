@@ -35,9 +35,7 @@ export function Canvas({
     contextElement.imageSmoothingEnabled = false;
   }, [canvas]);
 
-  useEffect(() => {
-    setupCanvas();
-  }, [setupCanvas]);
+  useEffect(() => setupCanvas, [setupCanvas]);
 
   const getAdjustedCoordinatesForPixelRatioAndCanvasOffset = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
