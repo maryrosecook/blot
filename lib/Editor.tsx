@@ -51,6 +51,7 @@ export const Editor = forwardRef(
         <div className="height-full">
           <div
             className="border-gray border-top border-right border-bottom border-left rounded-top-right rounded-bottom-right rounded-bottom-left"
+            // Make Toolbar left border overlap Canvas right border
             style={{ marginLeft: -1 }}
           >
             <Toolbar
