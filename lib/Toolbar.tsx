@@ -1,5 +1,3 @@
-import pencil from '../public/assets/pencil.png';
-import eraser from '../public/assets/eraser.png';
 import classNames from 'classnames';
 import { Popover } from 'evergreen-ui';
 
@@ -22,6 +20,17 @@ const COLORS = [
   '#E18C43',
   '#E1B040',
 ];
+
+function getToolImage(tool: string) {
+  switch (tool) {
+    case Tools.PENCIL:
+      return '/assets/pencil.png';
+    case Tools.ERASER:
+      return '/assets/eraser.png';
+    default:
+      throw new Error('Invalid tool');
+  }
+}
 
 export function Toolbar({
   currentTool,
@@ -49,7 +58,7 @@ export function Toolbar({
           onClick={() => setCurrentTool(tool)}
         >
           <img
-            src={tool === Tools.PENCIL ? pencil : eraser}
+            src={getToolImage(tool)}
             alt={tool}
             style={{ width: 25, height: 25 }}
           />
