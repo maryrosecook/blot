@@ -12,7 +12,11 @@ import { Canvas } from './Canvas';
 
 export const Editor = forwardRef(
   (
-    { width, height }: { width: number; height: number },
+    {
+      width,
+      height,
+      colors,
+    }: { width: number; height: number; colors: Array<string> },
     ref: ForwardedRef<{ getImageData: () => void }>
   ) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -57,6 +61,7 @@ export const Editor = forwardRef(
             <Toolbar
               currentTool={currentTool}
               setCurrentTool={setCurrentTool}
+              colors={colors}
               currentColor={currentColor}
               setCurrentColor={setCurrentColor}
             />

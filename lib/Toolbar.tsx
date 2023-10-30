@@ -6,29 +6,16 @@ enum Tools {
   ERASER = 'eraser',
 }
 
-const COLORS = [
-  '#000000',
-  '#FFFFFF',
-  '#796DCB',
-  '#6DA0CB',
-  '#5BB69F',
-  '#99BF6B',
-  '#A76AB9',
-  '#BB67A2',
-  '#C55D83',
-  '#D35E4C',
-  '#E18C43',
-  '#E1B040',
-];
-
 export function Toolbar({
   currentTool,
   setCurrentTool,
+  colors,
   currentColor,
   setCurrentColor,
 }: {
   currentTool: string;
   setCurrentTool: React.Dispatch<React.SetStateAction<string>>;
+  colors: Array<string>;
   currentColor: string;
   setCurrentColor: React.Dispatch<React.SetStateAction<string>>;
 }) {
@@ -60,6 +47,7 @@ export function Toolbar({
           minWidth={180}
           content={({ close }) => (
             <Colors
+              colors={colors}
               currentColor={currentColor}
               setCurrentColor={setCurrentColor}
               close={close}
@@ -79,17 +67,19 @@ export function Toolbar({
 }
 
 function Colors({
+  colors,
   currentColor,
   setCurrentColor,
   close,
 }: {
+  colors: Array<string>;
   currentColor: string;
   setCurrentColor: React.Dispatch<React.SetStateAction<string>>;
   close: () => void;
 }) {
   return (
     <div className="flex flex-wrap p1" style={{ width: 180 }}>
-      {COLORS.map((color) => (
+      {colors.map((color) => (
         <div
           key={color}
           className={classNames(
