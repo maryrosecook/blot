@@ -2,8 +2,6 @@ import { Button } from 'evergreen-ui';
 import { useBlot } from '../lib/useBlot';
 
 const COLORS = [
-  '#000000',
-  '#FFFFFF',
   '#796DCB',
   '#6DA0CB',
   '#5BB69F',
@@ -14,6 +12,8 @@ const COLORS = [
   '#D35E4C',
   '#E18C43',
   '#E1B040',
+  '#000000',
+  '#FFFFFF',
 ];
 
 function App() {
@@ -38,3 +38,6 @@ function App() {
 }
 
 export default App;
+
+// * Write Readme
+// * Publish on GitHub
