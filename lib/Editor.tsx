@@ -84,6 +84,36 @@ export const Editor = forwardRef(
     const PENCIL_RADIUS = 3;
     const ERASER_SIZE = 9;
 
+    const makeToolMark = useCallback(
+      (coordinates: { x: number; y: number }) => {
+        if (!context) {
+          return;
+        }
+
+        context.beginPath();
+        if (currentTool === 'eraser') {
+          context.clearRect(
+            coordinates.x,
+            coordinates.y,
+            ERASER_SIZE,
+            ERASER_SIZE
+          );
+        } else {
+          context.arc(
+            coordinates.x,
+            coordinates.y,
+            PENCIL_RADIUS,
+            0,
+            Math.PI * 2,
+            true
+          );
+          context.fill();
+        }
+        context.closePath();
+      },
+      [context, currentTool]
+    );
+
     const onStartDrawing = (
       event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
     ) => {
@@ -98,28 +128,7 @@ export const Editor = forwardRef(
         return;
       }
 
-      context.beginPath();
-      if (currentTool === 'eraser') {
-        context.globalCompositeOperation = 'destination-out';
-        context.clearRect(
-          coordinates.x,
-          coordinates.y,
-          ERASER_SIZE,
-          ERASER_SIZE
-        );
-      } else {
-        context.globalCompositeOperation = 'source-over';
-        context.lineWidth = 7;
-        context.arc(
-          coordinates.x,
-          coordinates.y,
-          PENCIL_RADIUS,
-          0,
-          Math.PI * 2,
-          true
-        );
-        context.fill();
-      }
+      makeToolMark(coordinates);
       setIsDrawing(true);
     };
 
@@ -137,25 +146,7 @@ export const Editor = forwardRef(
         return;
       }
 
-      context.beginPath();
-      if (currentTool === 'eraser') {
-        context.clearRect(
-          coordinates.x,
-          coordinates.y,
-          ERASER_SIZE,
-          ERASER_SIZE
-        );
-      } else {
-        context.arc(
-          coordinates.x,
-          coordinates.y,
-          PENCIL_RADIUS,
-          0,
-          Math.PI * 2,
-          true
-        );
-        context.fill();
-      }
+      makeToolMark(coordinates);
     };
 
     const onStopDrawing = () => {
@@ -163,7 +154,6 @@ export const Editor = forwardRef(
         return;
       }
 
-      context.beginPath();
       setIsDrawing(false);
       context.globalCompositeOperation = 'source-over';
     };
