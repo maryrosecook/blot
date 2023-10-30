@@ -63,6 +63,7 @@ export function Canvas({
       }
 
       context.beginPath();
+      context.fillStyle = currentColor;
       if (currentTool === 'eraser') {
         context.clearRect(
           coordinates.x,
@@ -83,7 +84,7 @@ export function Canvas({
       }
       context.closePath();
     },
-    [context, currentTool]
+    [context, currentColor, currentTool]
   );
 
   const onStartDrawing = (
