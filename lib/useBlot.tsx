@@ -1,13 +1,15 @@
 import { useCallback, useRef } from 'react';
 import { Editor } from './Editor';
+import { assertTruthy } from './assert';
 
 export function useBlot({ colors }: { colors: Array<string> }) {
   const editorRef = useRef<{ getImageData: () => void }>(null);
 
   const getImageData = useCallback(() => {
-    if (editorRef.current) {
-      editorRef.current.getImageData();
-    }
+    const editor = editorRef.current;
+    assertTruthy(editor);
+
+    return editor.getImageData();
   }, []);
 
   return {

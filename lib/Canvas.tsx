@@ -19,10 +19,10 @@ export function Canvas({
   canvasRef: React.RefObject<HTMLCanvasElement>;
 }) {
   const [isDrawing, setIsDrawing] = useState(false);
-  const canvas = canvasRef.current;
-  const context = canvas?.getContext('2d');
 
   const setupCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+
     if (!canvas) {
       return;
     }
@@ -36,16 +36,15 @@ export function Canvas({
 
     contextElement.scale(pixelRatio, pixelRatio);
     contextElement.imageSmoothingEnabled = false;
-  }, [canvas]);
+  }, [canvasRef]);
 
   useEffect(() => setupCanvas, [setupCanvas]);
 
   const getAdjustedCoordinatesForPixelRatioAndCanvasOffset = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
-    if (!canvas) {
-      return;
-    }
+    const canvas = canvasRef.current;
+    assertTruthy(canvas);
 
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -56,12 +55,16 @@ export function Canvas({
 
   const makeToolMark = useCallback(
     (coordinates: { x: number; y: number }) => {
+      const canvas = canvasRef.current;
+      const context = canvas?.getContext('2d');
+
       if (!context) {
         return;
       }
 
       context.beginPath();
       context.fillStyle = currentColor;
+
       if (currentTool === 'eraser') {
         context.clearRect(
           coordinates.x,
@@ -82,22 +85,21 @@ export function Canvas({
       }
       context.closePath();
     },
-    [context, currentColor, currentTool]
+    [canvasRef, currentColor, currentTool]
   );
 
   const onStartDrawing = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext('2d');
+
     if (!context) {
       return;
     }
 
     const coordinates =
       getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
-
-    if (!coordinates) {
-      return;
-    }
 
     makeToolMark(coordinates);
     setIsDrawing(true);
@@ -106,27 +108,23 @@ export function Canvas({
   const onDrawMove = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
-    if (!isDrawing || !context) {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext('2d');
+
+    if (!isDrawing) {
       return;
     }
+
+    assertTruthy(context);
 
     const coordinates =
       getAdjustedCoordinatesForPixelRatioAndCanvasOffset(event);
-
-    if (!coordinates) {
-      return;
-    }
 
     makeToolMark(coordinates);
   };
 
   const onStopDrawing = () => {
-    if (!context) {
-      return;
-    }
-
     setIsDrawing(false);
-    context.globalCompositeOperation = 'source-over';
   };
 
   return (

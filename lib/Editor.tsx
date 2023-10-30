@@ -9,6 +9,7 @@ import {
 import './styles.css';
 import { Toolbar } from './Toolbar';
 import { Canvas } from './Canvas';
+import { assertTruthy } from './assert';
 
 export const Editor = forwardRef(
   (
@@ -23,18 +24,15 @@ export const Editor = forwardRef(
     const [currentTool, setCurrentTool] = useState('pencil');
     const [currentColor, setCurrentColor] = useState('#000000');
 
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
-
     const getImageData = useCallback(() => {
-      if (!canvas || !context) {
-        return null;
-      }
+      const canvas = canvasRef.current;
+      const context = canvas?.getContext('2d');
+      assertTruthy(canvas && context);
 
       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
       return imageData;
-    }, [canvas, context]);
+    }, []);
 
     useImperativeHandle(ref, () => ({
       getImageData,
