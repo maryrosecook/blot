@@ -2,6 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import './styles.css';
 import { assertTruthy } from './assert';
 
+const PENCIL_RADIUS = 3;
+const ERASER_SIZE = 9;
+
 export function Canvas({
   width,
   height,
@@ -50,9 +53,6 @@ export function Canvas({
 
     return { x, y };
   };
-
-  const PENCIL_RADIUS = 3;
-  const ERASER_SIZE = 9;
 
   const makeToolMark = useCallback(
     (coordinates: { x: number; y: number }) => {
